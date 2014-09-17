@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Use AES-CTR as a stream cipher</title>
+</head>
+<body>
+    <script src="common.js"></script>
+    <script src="aes-ctr.js"></script>
+    <script>
+        var secretKey = hexStringToUint8Array("2b7e151628aed2a6abf7158809cf4f3c");
+        var data = asciiToUint8Array("1234567890abcdef1234567890abcdef");
+
+        var encryptor = new AesCtr();
+        var initialCounter = new Uint8Array(16);
+        encryptor.init(secretKey, initialCounter).then(
+            function() {
+                return encryptor.update(data);
+            },
+            console.error.bind(console, 'init failed')
+        ).then(
+            function() {
+                console.log('ciphertext', bytesToHexString(data));
+                console.log('ciphertext', bytesToASCIIString(data));
+            },
+            console.error.bind(console, 'update error')
+        );
+    </script>
+</body>
+</html>
