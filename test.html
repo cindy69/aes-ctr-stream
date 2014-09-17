@@ -12,6 +12,9 @@
         var data1 = asciiToUint8Array("1234567890abcdef12345678");
         var data2 = asciiToUint8Array("90abcdef");
 
+        var data2 = new Uint8Array(1500);
+        var start, end;
+
         var encryptor = new AesCtr();
         var initialCounter = new Uint8Array(16);
         encryptor.init(secretKey, initialCounter).then(
@@ -30,7 +33,29 @@
                 console.log('encrypted data2', bytesToHexString(data2));
             },
             console.error.bind(console, 'update error')
+        ).then(
+            function() {
+                start = performance.now();;
+                console.log('start', start);
+                var i, seq = Promise.resolve();
+                for (i = 0; i < 1000; i++) {
+                    seq = seq.then(
+                        function() {
+                            return encryptor.update(data2);
+                        }
+                    )
+                }
+                return seq;
+            }
+        ).then(
+            function() {
+                end = performance.now();;
+                console.log('end', end);
+                console.log('end - start', end - start);
+            },
+            console.error.bind(console, 'update data2 error')
         );
+
     </script>
 </body>
 </html>

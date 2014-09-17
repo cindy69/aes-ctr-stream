@@ -56,7 +56,7 @@
 
         function updateByte(idx) {
             bytes[idx] ^= self.stream[self.offset++];
-
+            
             if (self.offset === 16) {
                 return genBlock(self.key, self.counter).then(
                     function(ciphertext) {
