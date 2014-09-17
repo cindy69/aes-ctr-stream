@@ -9,19 +9,25 @@
     <script src="aes-ctr.js"></script>
     <script>
         var secretKey = hexStringToUint8Array("2b7e151628aed2a6abf7158809cf4f3c");
-        var data = asciiToUint8Array("1234567890abcdef1234567890abcdef");
+        var data1 = asciiToUint8Array("1234567890abcdef12345678");
+        var data2 = asciiToUint8Array("90abcdef");
 
         var encryptor = new AesCtr();
         var initialCounter = new Uint8Array(16);
         encryptor.init(secretKey, initialCounter).then(
             function() {
-                return encryptor.update(data);
+                return encryptor.update(data1);
             },
             console.error.bind(console, 'init failed')
         ).then(
             function() {
-                console.log('ciphertext', bytesToHexString(data));
-                console.log('ciphertext', bytesToASCIIString(data));
+                return encryptor.update(data2)
+            },
+            console.error.bind(console, 'update data1 error')
+        ).then(
+            function() {
+                console.log('encrypted data1', bytesToHexString(data1));
+                console.log('encrypted data2', bytesToHexString(data2));
             },
             console.error.bind(console, 'update error')
         );
