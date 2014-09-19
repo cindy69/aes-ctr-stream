@@ -37,15 +37,15 @@
             function() {
                 start = performance.now();
                 console.log('start', start);
-                var i, seq = Promise.resolve();
-                for (i = 0; i < 1000; i++) {
-                    seq = seq.then(
-                        function() {
-                            return encryptor.update(data3);
-                        }
-                    )
-                }
-                return seq;
+//                var i, seq = Promise.resolve();
+//                for (i = 0; i < 1000; i++) {
+//                    seq = seq.then(
+//                        function() {
+//                            return encryptor.update(data3);
+//                        }
+//                    )
+//                }
+//                return seq;
             }
         ).then(
             function() {
